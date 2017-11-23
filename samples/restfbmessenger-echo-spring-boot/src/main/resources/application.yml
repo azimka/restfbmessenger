@@ -3,6 +3,12 @@ logging:
     com.github.marsbits.restfbmessenger: DEBUG
 management.context-path: /management
 restfbmessenger:
-  verify-token: the-verify-token
-  access-token: the-access-token
-  app-secret: the-app-secret
+  enabled: true # Enable RestFB Messenger
+  verify-token: "verify_token_here"
+  access-token: "EAAcpAVWhv8QBADaLdDFjvI4zI3YkqslQTwMDUwqPfZAGBOz0YKcLXNQcHCwZCxUkDjZA005aplbZANpO8ltGcT2vKVLQpsnziIWurYhFcvwHebwyPAv7BOQUs9PR4VZBcLHnQ3g2Blygcvobtf6kFJwFAXomD8ZASZCwTeTJRINr1id79pCfWsZB"
+
+  app-secret: "a44cc11022dd4650339a7a66cfe589fa"
+  api-version: "v2.10" # The Facebook api version
+  webhook:
+    enabled: true # Enable the webhook servlet
+    path: /webhook # The path of the webhook servlet

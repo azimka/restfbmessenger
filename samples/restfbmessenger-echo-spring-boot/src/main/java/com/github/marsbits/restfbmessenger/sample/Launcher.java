@@ -25,9 +25,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Marcel Overdijk
  */
 @SpringBootApplication
-public class Application {
+public class Launcher {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Launcher.class, args);
     }
 }

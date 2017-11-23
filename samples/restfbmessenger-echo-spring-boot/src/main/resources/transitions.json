@@ -1,0 +1,166 @@
+[
+  {
+    "name": "start",
+    "message": "Начальная позиция",
+    "type": "quickReply",
+    "keyboardButtonItems": [
+      {
+        "name": "Отделения",
+        "title": "departments"
+      },
+      {
+        "name": "Расчет",
+        "title": "calculation"
+      },
+      {
+        "name": "FAQ",
+        "title": "faq"
+      },
+      {
+        "name": "Заявка",
+        "title": "proposal"
+      },
+      {
+        "name": "Позвонить",
+        "title": "phone"
+      }
+    ]
+  },
+  {
+    "name": "departments",
+    "message": "Укажите, пожалуйста, ваш город и адрес или нажмите «Отмена».",
+    "type": "quickReply",
+    "keyboardButtonItems": [
+      {
+        "name": "Определить местоположение автоматически",
+        "title": "autoDetectMyPlace"
+      },
+      {
+        "name": "Отмена",
+        "title": "cancel"
+      }
+    ],
+    "nextStageName": "city"
+  },
+  {
+    "name": "cancel",
+    "message": "Прерываю операцию.",
+    "type": "quickReply",
+    "keyboardButtonItems": [
+      {
+        "name": "Отделения",
+        "title": "departments"
+      },
+      {
+        "name": "Расчет",
+        "title": "calculation"
+      },
+      {
+        "name": "FAQ",
+        "title": "faq"
+      },
+      {
+        "name": "Заявка",
+        "title": "proposal"
+      },
+      {
+        "name": "Позвонить",
+        "title": "phone"
+      }
+    ]
+  },
+  {
+    "name": "phone",
+    "message": "Вы можете связаться с представителем банка по телефону",
+    "type": "callReply",
+    "nextStageName": "start",
+    "keyboardButtonItems": [
+      {
+        "name": "ООО Банк",
+        "title": "+80078723123"
+      }
+    ]
+  },
+  {
+    "name": "autoDetectMyPlace",
+    "message": "Сожалеем, рядом с вами нет отделений.",
+    "type": "location",
+    "keyboardButtonItems": [
+      {
+        "name": "Отмена",
+        "title": "cancel"
+      }
+    ]
+  },
+  {
+    "name": "faq",
+    "message": "Введите ваш вопрос.",
+    "type": "quickReply",
+    "nextStageName": "faq_answer",
+    "keyboardButtonItems": [
+      {
+        "name": "Меню",
+        "title": "cancel"
+      }
+    ]
+  },
+  {
+    "name": "faq_answer",
+    "message": "Извините. Я не смог понять Ваш вопрос. Я специализируюсь на рефинансировании потребительских кредитов. Попробуйте еще раз.",
+    "type": "quickReply",
+    "nextStageName":"start",
+    "keyboardButtonItems": [
+      {
+        "name": "Меню",
+        "title": "cancel"
+      }
+    ]
+  },
+  {
+    "name": "proposal",
+    "message": "Заполните простую заявку, отправьте ее и сотрудники банка свяжутся с вами и проконсультируют по вопросам кредита и рефинансирования.  \n\nВведите город Вашей постоянной прописки.",
+    "type": "quickReply",
+    "nextStageName":"proposal_place",
+    "keyboardButtonItems": [
+      {
+        "name": "Меню",
+        "title": "cancel"
+      }
+    ]
+  },
+  {
+    "name": "proposal_place",
+    "message": "Введите дату Вашего рождения.",
+    "type": "quickReply",
+    "nextStageName":"proposal_birthday",
+    "keyboardButtonItems": [
+      {
+        "name": "Меню",
+        "title": "cancel"
+      }
+    ]
+  },
+  {
+    "name": "proposal_birthday",
+    "message": "Введите адрес электронной почты.",
+    "type": "quickReply",
+    "nextStageName":"proposal_email",
+    "keyboardButtonItems": [
+      {
+        "name": "Меню",
+        "title": "cancel"
+      }
+    ]
+  },
+  {
+    "name": "proposal_email",
+    "message": "Спасибо! Ваша заявка принята в обработку",
+    "type": "quickReply",
+    "keyboardButtonItems": [
+      {
+        "name": "Меню",
+        "title": "cancel"
+      }
+    ]
+  }
+]

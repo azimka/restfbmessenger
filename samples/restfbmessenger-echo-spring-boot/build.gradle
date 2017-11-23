@@ -1,25 +1,29 @@
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        mavenLocal()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE"
-    }
+plugins {
+    id 'org.springframework.boot' version '1.5.8.RELEASE'
 }
 
-description = "RestFB Messenger Sample Echo Spring Boot"
-
-apply from: "../samples.gradle"
+description = "Facebook interactive bot"
 
 apply plugin: "java"
-apply plugin: "spring-boot"
+
+group = 'ru.multicon.facebot'
+version = '0.1-SNAPSHOT'
+
+ext {
+    restfbmessengerVersion = "1.3.0"
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    mavenLocal()
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
-    compile "com.github.marsbits.restfbmessenger:restfbmessenger-spring-boot-starter:${restfbmessengerVersion}"
+    compile 'com.github.azimka:restfbmessenger:54a7a641e1'
 }

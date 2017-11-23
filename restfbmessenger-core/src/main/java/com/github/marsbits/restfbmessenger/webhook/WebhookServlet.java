@@ -81,6 +81,8 @@ public class WebhookServlet extends HttpServlet {
                 }
             }
         }
+
+        messenger.setGetStartedButton("USER_DEFINED_PAYLOAD");
     }
 
     /**
