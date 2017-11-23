@@ -18,6 +18,7 @@ package com.github.marsbits.restfbmessenger.webhook;
 
 import com.github.marsbits.restfbmessenger.Messenger;
 import com.github.marsbits.restfbmessenger.MessengerProvider;
+import com.restfb.types.send.MessagingType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,8 +82,6 @@ public class WebhookServlet extends HttpServlet {
                 }
             }
         }
-
-        messenger.setGetStartedButton("USER_DEFINED_PAYLOAD");
     }
 
     /**

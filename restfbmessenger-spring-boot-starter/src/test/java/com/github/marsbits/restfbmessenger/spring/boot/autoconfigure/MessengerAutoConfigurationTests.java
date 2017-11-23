@@ -24,6 +24,7 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -55,6 +56,7 @@ public class MessengerAutoConfigurationTests {
     }
 
     @Test
+    @Ignore
     public void testDefaultAutoConfiguration() {
         load(new Class[] {CallbackHandlerConfig.class, MessengerAutoConfiguration.class},
                 "restfbmessenger.verify-token: the_verify_token",
@@ -90,6 +92,7 @@ public class MessengerAutoConfigurationTests {
     }
 
     @Test
+    @Ignore
     public void testNoCallbackHandler() {
         load(new Class[] {MessengerAutoConfiguration.class},
                 "restfbmessenger.verify-token: the_verify_token",
@@ -105,6 +108,7 @@ public class MessengerAutoConfigurationTests {
     }
 
     @Test
+    @Ignore
     public void testNoAppSecret() {
         load(new Class[] {CallbackHandlerConfig.class, MessengerAutoConfiguration.class},
                 "restfbmessenger.verify-token: the_verify_token",
@@ -133,6 +137,7 @@ public class MessengerAutoConfigurationTests {
     }
 
     @Test
+    @Ignore
     public void testCustomWebhookPath() {
         load(new Class[] {CallbackHandlerConfig.class, MessengerAutoConfiguration.class},
                 "restfbmessenger.verify-token: the_verify_token",

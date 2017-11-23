@@ -76,6 +76,7 @@ public class MessengerAutoConfiguration {
             String path = properties.getWebhook().getPath();
             String urlMapping = (path.endsWith("/") ? path + "*" : path + "/*");
             WebhookServlet servlet = new WebhookServlet(messenger);
+            messenger.setGetStartedButton("test123");
             return new ServletRegistrationBean(servlet, urlMapping);
         }
     }
