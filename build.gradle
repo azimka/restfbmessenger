@@ -104,7 +104,7 @@ configure(subprojects) { subproject ->
     }
 
     signing {
-        sign configurations.archives
+//        sign configurations.archives
     }
 
 
