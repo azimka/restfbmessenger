@@ -60,6 +60,13 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
 
         sleep(TimeUnit.SECONDS, 1);
 
+        List<MenuItem> callToActions = new ArrayList<>();
+        callToActions.add(new PostbackButton("posback1", "test1"));
+        callToActions.add(new PostbackButton("posback2", "test2"));
+        callToActions.add(new PostbackButton("posback3", "test3"));
+
+        messenger.setPersistentMenu(callToActions);
+
 //        9k49URc6nBYH
 
         if (message.getText() != null && message.getQuickReply() != null && message.getQuickReply().getPayload() != null) {
@@ -210,13 +217,22 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
     public void onPostback(Messenger messenger, MessagingItem messaging) {
         super.onPostback(messenger, messaging);
 
-        List<CallToAction> callToActions = new ArrayList<>();
-//        callToActions.add(new CallToAction("test1"));
-//        callToActions.add(new CallToAction("test2"));
-//        callToActions.add(new CallToAction("test3"));
-//        messenger.setPersistentMenu(callToActions);
+        switch (messaging.getPostback().getPayload()) {
+            case "test123": {
+                List<MenuItem> callToActions = new ArrayList<>();
+                callToActions.add(new PostbackButton("Сделать расчет", "calculation"));
+                callToActions.add(new PostbackButton("Заявка", "proposal"));
+                callToActions.add(new PostbackButton("Еще", "more"));
+//                callToActions.add(new PostbackButton("Отделения", "departments"));
+//                callToActions.add(new PostbackButton("Позвонить в банк", "phone"));
+//                callToActions.add(new PostbackButton("FAQ", "faq"));
+m
+                messenger.setPersistentMenu(callToActions);
+            }
+            default:{}
+        }
 
-        logger.warning("postback!!!!!!!!!!!!!!!!!!!!2222");
+        logger.warning("postback!!!!!!!!!!!!!!!!!!!!22221111");
     }
 
     private void sleep(TimeUnit timeUnit, long duration) {

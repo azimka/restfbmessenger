@@ -168,6 +168,9 @@ public interface Messenger {
      * @return the {@code SendResponse}
      * @throws FacebookException in case an error occurs while performing the Facebook API call
      */
+    @Deprecated
+    void setPersistentMenu1(List<CallToAction> callToActions) throws FacebookException;
+
     void setPersistentMenu(List<MenuItem> callToActions) throws FacebookException;
 
     /**

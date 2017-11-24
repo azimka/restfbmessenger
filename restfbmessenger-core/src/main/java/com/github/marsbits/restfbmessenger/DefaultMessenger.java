@@ -275,6 +275,15 @@ public class DefaultMessenger implements Messenger {
     }
 
     @Override
+    public void setPersistentMenu1(List<CallToAction> callToActions) throws FacebookException {
+        requireNonNull(callToActions, "'callToActions' must not be null");
+        facebookClient.publish(THREAD_SETTINGS_PATH, SendResponse.class,
+                Parameter.with(SETTING_TYPE_PARAM_NAME, SettingTypeEnum.call_to_actions),
+                Parameter.with(THREAD_STATE_PARAM_NAME, ThreadStateEnum.existing_thread),
+                Parameter.with(CALL_TO_ACTIONS_PARAM_NAME, callToActions));
+    }
+
+    @Override
     public void setPersistentMenu(List<MenuItem> callToActions) throws FacebookException {
         requireNonNull(callToActions, "'callToActions' must not be null");
         facebookClient.publish(THREAD_SETTINGS_PATH, SendResponse.class,

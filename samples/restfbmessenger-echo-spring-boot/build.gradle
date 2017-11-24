@@ -25,5 +25,5 @@ targetCompatibility = 1.8
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
-    compile 'com.github.azimka:restfbmessenger:bd47da9685'
+    compile 'com.github.azimka:restfbmessenger:2ac1aeea77'
 }

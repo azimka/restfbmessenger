@@ -343,7 +343,7 @@ public class DefaultMessengerTests {
                 new CallToAction("call to action 1"),
                 new CallToAction("call to action 2")
         );
-        messenger.setPersistentMenu(callToActions);
+        messenger.setPersistentMenu1(callToActions);
         verify(facebookClient).publish(THREAD_SETTINGS_PATH, SendResponse.class,
                 Parameter.with(SETTING_TYPE_PARAM_NAME, SettingTypeEnum.call_to_actions),
                 Parameter.with(THREAD_STATE_PARAM_NAME, ThreadStateEnum.existing_thread),
@@ -361,7 +361,7 @@ public class DefaultMessengerTests {
                 Parameter.with(THREAD_STATE_PARAM_NAME, ThreadStateEnum.existing_thread),
                 Parameter.with(CALL_TO_ACTIONS_PARAM_NAME, callToActions)))
                 .thenThrow(facebookOAuthException);
-        messenger.setPersistentMenu(callToActions);
+        messenger.setPersistentMenu1(callToActions);
     }
 
     @Test
