@@ -26,14 +26,7 @@ import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.exception.FacebookException;
 import com.restfb.types.User;
-import com.restfb.types.send.CallToAction;
-import com.restfb.types.send.DomainActionTypeEnum;
-import com.restfb.types.send.Greeting;
-import com.restfb.types.send.Message;
-import com.restfb.types.send.PageMessageTag;
-import com.restfb.types.send.SendResponse;
-import com.restfb.types.send.SettingTypeEnum;
-import com.restfb.types.send.ThreadStateEnum;
+import com.restfb.types.send.*;
 import com.restfb.types.webhook.WebhookObject;
 import com.restfb.util.EncodingUtils;
 
@@ -282,7 +275,7 @@ public class DefaultMessenger implements Messenger {
     }
 
     @Override
-    public void setPersistentMenu(List<CallToAction> callToActions) throws FacebookException {
+    public void setPersistentMenu(List<MenuItem> callToActions) throws FacebookException {
         requireNonNull(callToActions, "'callToActions' must not be null");
         facebookClient.publish(THREAD_SETTINGS_PATH, SendResponse.class,
                 Parameter.with(SETTING_TYPE_PARAM_NAME, SettingTypeEnum.call_to_actions),

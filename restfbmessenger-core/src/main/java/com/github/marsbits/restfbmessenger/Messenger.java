@@ -21,6 +21,7 @@ import com.restfb.exception.FacebookException;
 import com.restfb.types.User;
 import com.restfb.types.send.CallToAction;
 import com.restfb.types.send.Greeting;
+import com.restfb.types.send.MenuItem;
 import com.restfb.types.send.PageMessageTag;
 
 import java.util.List;
@@ -167,7 +168,7 @@ public interface Messenger {
      * @return the {@code SendResponse}
      * @throws FacebookException in case an error occurs while performing the Facebook API call
      */
-    void setPersistentMenu(List<CallToAction> callToActions) throws FacebookException;
+    void setPersistentMenu(List<MenuItem> callToActions) throws FacebookException;
 
     /**
      * Removes the persistent menu.
