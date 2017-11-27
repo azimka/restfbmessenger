@@ -218,15 +218,19 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
         super.onPostback(messenger, messaging);
 
         switch (messaging.getPostback().getPayload()) {
-            case "test123": {
+            case "GET_STARTED_PAYLOAD": {
                 List<MenuItem> callToActions = new ArrayList<>();
                 callToActions.add(new PostbackButton("Сделать расчет", "calculation"));
                 callToActions.add(new PostbackButton("Заявка", "proposal"));
-                callToActions.add(new PostbackButton("Еще", "more"));
+                NestedButton nestedButton = new NestedButton("Еще");
+                nestedButton.addCallToAction(new PostbackButton("Отделения", "departments"));
+                nestedButton.addCallToAction(new PostbackButton("Позвонить в банк", "phone"));
+                nestedButton.addCallToAction(new PostbackButton("FAQ", "faq"));
+                callToActions.add(nestedButton);
 //                callToActions.add(new PostbackButton("Отделения", "departments"));
 //                callToActions.add(new PostbackButton("Позвонить в банк", "phone"));
 //                callToActions.add(new PostbackButton("FAQ", "faq"));
-m
+
                 messenger.setPersistentMenu(callToActions);
             }
             default:{}
