@@ -26,7 +26,7 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
 
     private static final Logger logger = Logger.getLogger(MessageCallbackHandler.class.getName());
     private static final String HELLO_MESSAGE = "Выбирете ...";
-    private static final String TRANSITION_FILE_NAME = "transitions.json";
+    private static final String TRANSITION_FILE_NAME = "transitions2.json";
 
     private Map<String, TransitionItem> transitionMap = new HashMap<>();
     private Map<String, TransitionItem> currentState = new HashMap<>();
@@ -60,13 +60,6 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
 
         sleep(TimeUnit.SECONDS, 1);
 
-        List<MenuItem> callToActions = new ArrayList<>();
-        callToActions.add(new PostbackButton("posback1", "test1"));
-        callToActions.add(new PostbackButton("posback2", "test2"));
-        callToActions.add(new PostbackButton("posback3", "test3"));
-
-        messenger.setPersistentMenu(callToActions);
-
 //        9k49URc6nBYH
 
         if (message.getText() != null && message.getQuickReply() != null && message.getQuickReply().getPayload() != null) {
@@ -88,12 +81,12 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
             TransitionItem nextStage = null;
             if (currentStage != null) {
                 nextStage = transitionMap.get(currentStage.getNextStageName());
-                if(nextStage == null) {
+                if (nextStage == null) {
 //                    messenger.send().textMessage(recipient, "Сообщение не распознано, попробуйте еще раз");
                     sendQuickReplyMessage(messenger, recipient, currentStage);
-                }
-                else {
-                    sendQuickReplyMessage(messenger, recipient, nextStage);
+                } else {
+                    sendMessage(messenger, recipient, nextStage);
+//                    sendQuickReplyMessage(messenger, recipient, nextStage);
                     currentState.put(senderId, nextStage);
                 }
 
@@ -102,23 +95,13 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
                 currentState.put(senderId, transitionMap.get("start"));
             }
 
-        } else {
-
-            if (message.getAttachments() != null) {
-                for (MessagingAttachment attachment : message.getAttachments()) {
-                    String type = attachment.getType();
-                    if ("location".equals(type)) {
-                        // Echo the received location as text message(s)
-//                        messenger.send().textMessage(recipient, transitionMap.get("autoDetectMyPlace").getMessage());
-                        sendQuickReplyMessage(messenger, recipient, transitionMap.get("autoDetectMyPlace"));
-                    } else {
-                        // Echo the attachment
-                        String url = attachment.getPayload().getUrl();
-//                        messenger.send().attachment(recipient,
-//                                MediaAttachment.Type.valueOf(type.toUpperCase()), url);
-                    }
-                }
-            }
+        } else if (message.getAttachments() != null) {
+            List<MessagingAttachment> messagingAttachments = message.getAttachments();
+            messagingAttachments.stream().filter(item -> "location".equals(item.getType())).forEach(item -> {
+                TransitionItem currentStage = currentState.get(senderId);
+                TransitionItem newTransitionItem = transitionMap.get(currentStage.getNextStageName());
+                sendMessage(messenger, recipient, newTransitionItem);
+            });
         }
 
         messenger.send().typingOff(recipient);
@@ -135,8 +118,17 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
                 break;
             }
 
+            case "postbackButtons": {
+                sendPostbackMessage(messenger, recipient, transitionItem);
+            }
+
             case "location": {
                 sendLocation(messenger, recipient, transitionItem);
+                break;
+            }
+
+            case "text": {
+                sendText(messenger, recipient, transitionItem);
                 break;
             }
             default: {
@@ -146,28 +138,40 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
         }
     }
 
+    private void sendText(Messenger messenger, IdMessageRecipient recipient, TransitionItem transitionItem) {
+        messenger.send().textMessage(MessagingType.RESPONSE, recipient, transitionItem.getMessage());
+    }
+
+
     private void sendQuickReplyMessage(Messenger messenger, IdMessageRecipient recipient, TransitionItem transitionItem) {
         KeyboardButtonItem[] keyboardButtonItems = transitionItem.getKeyboardButtonItems();
         List<QuickReply> quickReplyList = new ArrayList<>();
         for (KeyboardButtonItem item : keyboardButtonItems) {
             String name = item.getName();
             String title = item.getTitle();
-            quickReplyList.add(new QuickReply(name, title));
+            quickReplyList.add(new QuickReply(title, name));
         }
 
-        List<CallToAction> callToActions = new ArrayList<>();
-        callToActions.add(new CallToAction("test1"));
-        callToActions.add(new CallToAction("test2"));
-        callToActions.add(new CallToAction("test3"));
-//        messenger.setPersistentMenu(callToActions);
-//        messenger.send().quickReplies(recipient, transitionItem.getMessage(), quickReplyList);
+        messenger.send().quickReplies(MessagingType.RESPONSE, recipient, transitionItem.getMessage(), quickReplyList);
     }
 
     private void sendLocation(Messenger messenger, IdMessageRecipient recipient, TransitionItem transitionItem) {
         QuickReply quickReply = new QuickReply();
         List<QuickReply> quickReplies = new ArrayList<>();
         quickReplies.add(quickReply);
-//        messenger.send().quickReplies(recipient, "Отправка координат", quickReplies);
+        messenger.send().quickReplies(MessagingType.RESPONSE, recipient, transitionItem.getMessage(), quickReplies);
+    }
+
+    private void sendPostbackMessage(Messenger messenger, IdMessageRecipient recipient, TransitionItem transitionItem) {
+        KeyboardButtonItem[] keyboardButtonItems = transitionItem.getKeyboardButtonItems();
+        ButtonTemplatePayload buttonTemplatePayload = new ButtonTemplatePayload(transitionItem.getMessage());
+        for (KeyboardButtonItem item : keyboardButtonItems) {
+            String name = item.getName();
+            String title = item.getTitle();
+            buttonTemplatePayload.addButton(new PostbackButton(title, name));
+        }
+
+        messenger.send().buttonTemplate(MessagingType.RESPONSE, recipient, buttonTemplatePayload);
     }
 
     private void sendCallReplyMessage(Messenger messenger, IdMessageRecipient recipient, TransitionItem transitionItem) {
@@ -179,7 +183,7 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
             buttonTemplatePayload.addButton(new CallButton(name, title));
         }
 
-//        messenger.send().buttonTemplate(recipient, buttonTemplatePayload);
+        messenger.send().buttonTemplate(MessagingType.RESPONSE, recipient, buttonTemplatePayload);
     }
 
     private void getMainKeyboard(Messenger messenger, IdMessageRecipient recipient) {
@@ -217,26 +221,54 @@ public class MessageCallbackHandler extends AbstractCallbackHandler {
     public void onPostback(Messenger messenger, MessagingItem messaging) {
         super.onPostback(messenger, messaging);
 
-        switch (messaging.getPostback().getPayload()) {
-            case "GET_STARTED_PAYLOAD": {
-                List<MenuItem> callToActions = new ArrayList<>();
-                callToActions.add(new PostbackButton("Сделать расчет", "calculation"));
-                callToActions.add(new PostbackButton("Заявка", "proposal"));
-                NestedButton nestedButton = new NestedButton("Еще");
-                nestedButton.addCallToAction(new PostbackButton("Отделения", "departments"));
-                nestedButton.addCallToAction(new PostbackButton("Позвонить в банк", "phone"));
-                nestedButton.addCallToAction(new PostbackButton("FAQ", "faq"));
-                callToActions.add(nestedButton);
-//                callToActions.add(new PostbackButton("Отделения", "departments"));
-//                callToActions.add(new PostbackButton("Позвонить в банк", "phone"));
-//                callToActions.add(new PostbackButton("FAQ", "faq"));
+        String senderId = messaging.getSender().getId();
 
-                messenger.setPersistentMenu(callToActions);
-            }
-            default:{}
+        IdMessageRecipient recipient = new IdMessageRecipient(senderId);
+
+        messenger.send().markSeen(recipient);
+        messenger.send().typingOn(recipient);
+
+        sleep(TimeUnit.SECONDS, 1);
+
+        String key = messaging.getPostback().getPayload();
+
+        TransitionItem transitionItem = transitionMap.get(key);
+        if (transitionItem == null) {
+            return;
         }
 
-        logger.warning("postback!!!!!!!!!!!!!!!!!!!!22221111");
+        currentState.put(senderId, transitionItem);
+        sendMessage(messenger, recipient, transitionItem);
+
+//        switch (messaging.getPostback().getPayload()) {
+//            case "GET_STARTED_PAYLOAD": {
+////                List<MenuItem> callToActions = new ArrayList<>();
+////                callToActions.add(new PostbackButton("Сделать расчет", "calculation"));
+////                callToActions.add(new PostbackButton("Заявка", "proposal"));
+////                NestedButton nestedButton = new NestedButton("Еще");
+////                nestedButton.addCallToAction(new PostbackButton("Отделения", "departments"));
+////                nestedButton.addCallToAction(new PostbackButton("Позвонить в банк", "phone"));
+////                nestedButton.addCallToAction(new PostbackButton("FAQ", "faq"));
+////                callToActions.add(nestedButton);
+////
+////                messenger.setPersistentMenu(callToActions);
+//            }
+//            case "CALCULATION_PAYLOAD": {
+//                ButtonTemplatePayload buttonTemplatePayload = new ButtonTemplatePayload("Выберите взять новый кредит или воспользоваться рефинансированием.");
+//                buttonTemplatePayload.addButton(new PostbackButton("Взять кредит", "CREDIT_PAYLOAD"));
+//                buttonTemplatePayload.addButton(new PostbackButton("Рефинансирование", "refinance"));
+//                messenger.send().buttonTemplate(MessagingType.RESPONSE, recipient, buttonTemplatePayload);
+//            }
+//            case "CREDIT_PAYLOAD": {
+////                ButtonTemplatePayload buttonTemplatePayload = new ButtonTemplatePayload("Выберите взять новый кредит или воспользоваться рефинансированием.");
+////                buttonTemplatePayload.addButton(new PostbackButton("Взять кредит", "CREDIT_PAYLOAD"));
+////                buttonTemplatePayload.addButton(new PostbackButton("Рефинансирование", "refinance"));
+//                messenger.send().textMessage(MessagingType.RESPONSE, recipient, "Введите сумму кредита от 100000 до 3000000");
+//            }
+//            default: {
+//            }
+//        }
+        messenger.send().typingOff(recipient);
     }
 
     private void sleep(TimeUnit timeUnit, long duration) {
