@@ -1,8 +1,14 @@
 [
   {
+    "name": "DEFAULT_STAGE",
+    "message": "Я не понял ваше сообщение. Пожалуйста, воспользуйтесь кнопками меню.",
+    "@type": "text",
+    "nextStageName": "DEFAULT_STAGE"
+  },
+  {
     "name": "CALCULATION_PAYLOAD",
     "message": "Выберите взять новый кредит или воспользоваться рефинансированием.",
-    "type": "postbackButtons",
+    "@type": "postbackButtons",
     "keyboardButtonItems": [
       {
         "name": "CREDIT_PAYLOAD",
@@ -17,36 +23,36 @@
   {
     "name": "CREDIT_PAYLOAD",
     "message": "Введите сумму кредита от 100000 до 3000000",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "CREDIT_SUM"
   },
   {
     "name": "CREDIT_SUM",
     "message": "Отлично! Теперь введите срок кредита от 6 мес. до 5 лет (60 мес). ",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "CREDIT_TIME"
   },
   {
     "name": "CREDIT_TIME",
     "message": "Воспользовавшись кредитом банка ВТБ Вы получаете выгодные условия!\nЕжемесячный платеж: 9021 р\nСтавка: 14.9% годовых",
-    "type": "text"
+    "@type": "text"
   },
   {
     "name": "REFINANCE_PAYLOAD",
     "message": "Введите ежемесячный платеж по кредиту в другом банке.",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "REFINANCE_MONTH_COST_MONEY"
   },
   {
     "name": "REFINANCE_MONTH_COST_MONEY",
     "message": "Отлично! Теперь введите остаток долга в другом банке.",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "REFINANCE_TOTAL_REST_MONEY"
   },
   {
     "name": "REFINANCE_TOTAL_REST_MONEY",
     "message": "Вы хотите получить дополнительные денежные средства?",
-    "type": "postbackButtons",
+    "@type": "postbackButtons",
     "keyboardButtonItems": [
       {
         "name": "REFINANCE_ADDITIONAL_YES",
@@ -61,13 +67,13 @@
   {
     "name": "REFINANCE_ADDITIONAL_YES",
     "message": "Какую сумму Вы хотите получить?",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "REFINANCE_ADDITIONAL_SUM_SIZE"
   },
   {
     "name": "REFINANCE_ADDITIONAL_SUM_SIZE",
     "message": "Воспользовавшись рефинансированием в банке ВТБ Вы сможете снизить платеж! Новый платеж: 8053\nСумма нового кредита: 350000 \nНовая ставка: 13.5%\nНовый срок: 60 мес.\nДля того, чтобы снова рассчитать рефинансирование нажмите \"Рассчитать заново\" или перейдите в раздел \"Оформить заявку\"",
-    "type": "quickReply",
+    "@type": "quickReply",
     "keyboardButtonItems": [
       {
         "name": "REFINANCE_PAYLOAD",
@@ -80,107 +86,65 @@
     ]
   },
   {
-    "name": "start",
-    "message": "Начальная позиция",
-    "type": "quickReply",
-    "keyboardButtonItems": [
-      {
-        "name": "Отделения",
-        "title": "departments"
-      },
-      {
-        "name": "Расчет",
-        "title": "calculation"
-      },
-      {
-        "name": "FAQ",
-        "title": "faq"
-      },
-      {
-        "name": "Заявка",
-        "title": "proposal"
-      },
-      {
-        "name": "Позвонить",
-        "title": "phone"
-      }
-    ]
-  },
-  {
     "name": "DEPARTMENTS_PAYLOAD",
-    "message": "Укажите, пожалуйста, ваш город и адрес или нажмите «Отмена».",
-    "type": "quickReply",
+    "message": "Укажите, пожалуйста, ваш город и адрес.",
+    "@type": "location",
     "keyboardButtonItems": [
       {
         "name": "autoDetectMyPlace",
         "title": "Определить местоположение"
       }
     ],
-    "nextStageName": "city"
+    "nextStageName": "detected_place"
   },
   {
-    "name": "phone",
-    "message": "Вы можете связаться с представителем банка по телефону",
-    "type": "callReply",
-    "nextStageName": "start",
+    "name": "CALL_BANK_PAYLOAD",
+    "message": "\"Наименование банка\"\ntel. +880078723123",
+    "@type": "callReply",
     "keyboardButtonItems": [
       {
-        "name": "ООО Банк",
-        "title": "+80078723123"
+        "name": "+880078723123",
+        "title": "Позвонить"
       }
     ]
   },
   {
-    "name": "autoDetectMyPlace",
+    "name": "detected_place",
     "message": "Сожалеем, рядом с вами нет отделений.",
-    "type": "location",
-    "nextStageName": "autoDetectMyPlaceResult"
+    "@type": "text"
   },
   {
-    "name": "faq",
+    "name": "FAQ_PAYLOAD",
     "message": "Введите ваш вопрос.",
-    "type": "quickReply",
-    "nextStageName": "faq_answer",
-    "keyboardButtonItems": [
-      {
-        "name": "Меню",
-        "title": "cancel"
-      }
-    ]
+    "@type": "text",
+    "nextStageName": "faq_answer"
   },
   {
     "name": "faq_answer",
     "message": "Извините. Я не смог понять Ваш вопрос. Я специализируюсь на рефинансировании потребительских кредитов. Попробуйте еще раз.",
-    "type": "quickReply",
-    "nextStageName": "start",
-    "keyboardButtonItems": [
-      {
-        "name": "Меню",
-        "title": "cancel"
-      }
-    ]
+    "@type": "quickReply"
   },
   {
     "name": "PROPOSAL_PAYLOAD",
     "message": "Заполните простую заявку, отправьте ее и сотрудники банка свяжутся с вами и проконсультируют по вопросам кредита и рефинансирования.  \n\nВведите город Вашей постоянной прописки.",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "proposal_place"
   },
   {
     "name": "proposal_place",
     "message": "Введите дату Вашего рождения.",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "proposal_birthday"
   },
   {
     "name": "proposal_birthday",
     "message": "Введите адрес электронной почты.",
-    "type": "text",
+    "@type": "text",
     "nextStageName": "proposal_email"
   },
   {
     "name": "proposal_email",
     "message": "Спасибо! Ваша заявка принята в обработку",
-    "type": "text"
+    "@type": "text"
   }
 ]

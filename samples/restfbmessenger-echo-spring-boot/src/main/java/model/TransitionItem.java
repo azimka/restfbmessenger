@@ -1,14 +1,23 @@
 package model;
 
-import java.util.Arrays;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-public class TransitionItem {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PostbackNode.class, name = "postbackButtons"),
+        @JsonSubTypes.Type(value = TextNode.class, name = "text"),
+        @JsonSubTypes.Type(value = QuickReplyNode.class, name = "quickReply"),
+        @JsonSubTypes.Type(value = CallNode.class, name = "callReply"),
+        @JsonSubTypes.Type(value = LocationNode.class, name = "location")
+})
+public abstract class TransitionItem implements SendMessage {
     private String name;
     private String message;
     private String keyboardTemplate;
     private String nextStageName;
-    private String actionName;
-    private String type;
     private KeyboardButtonItem[] keyboardButtonItems = new KeyboardButtonItem[0];
 
     public String getName() {
@@ -49,33 +58,5 @@ public class TransitionItem {
 
     public void setNextStageName(String nextStageName) {
         this.nextStageName = nextStageName;
-    }
-
-    public String getActionName() {
-        return actionName;
-    }
-
-    public void setActionName(String actionName) {
-        this.actionName = actionName;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "TransitionItem{" +
-                "name='" + name + '\'' +
-                ", message='" + message + '\'' +
-                ", keyboardTemplate='" + keyboardTemplate + '\'' +
-                ", nextStageName='" + nextStageName + '\'' +
-                ", actionName='" + actionName + '\'' +
-                ", keyboardButtonItems=" + Arrays.toString(keyboardButtonItems) +
-                '}';
     }
 }
